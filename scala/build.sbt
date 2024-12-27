@@ -7,6 +7,8 @@ lazy val root = (project in file("."))
     name := "scala"
   )
 
+
+
 // https://mvnrepository.com/artifact/org.apache.spark/spark-core
 libraryDependencies += "org.apache.spark" %% "spark-core" % "3.2.0"
 libraryDependencies += "org.slf4j" % "slf4j-api" % "2.0.16"
@@ -14,3 +16,6 @@ libraryDependencies += "org.slf4j" % "slf4j-api" % "2.0.16"
 libraryDependencies += "org.apache.spark" %% "spark-sql" % "3.2.0"
 libraryDependencies += "org.apache.spark" %% "spark-streaming" % "3.2.0"
 libraryDependencies += "org.apache.spark" %% "spark-sql-kafka-0-10" % "3.2.0"
+libraryDependencies += "com.johnsnowlabs.nlp" %% "spark-nlp" % "5.5.1"
+libraryDependencies += "com.amazonaws" % "aws-java-sdk-s3" % "1.12.527"
+libraryDependencies += "org.apache.spark" %% "spark-mllib" % "3.2.0"
