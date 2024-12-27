@@ -1,5 +1,3 @@
-import random
-import string
 from kafka import KafkaProducer
 import json
 import time
@@ -13,7 +11,8 @@ df = pd.read_json('./data/tweets.json', lines=True)
 print(df)
 
 producer = KafkaProducer(
-    bootstrap_servers='localhost:9092',  # Kafka server
+    bootstrap_servers='broker:9092',
+    api_version=(3,8,0),
     value_serializer=lambda v: json.dumps(v).encode('utf-8')
 )
 

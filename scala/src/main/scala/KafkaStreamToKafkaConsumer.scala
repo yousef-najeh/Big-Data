@@ -18,8 +18,8 @@ object KafkaStreamToKafkaConsumer {
     // Subscribe to Kafka topic (e.g., 'testing') and read messages
     val kafkaStream = spark.readStream
       .format("kafka")
-      .option("kafka.bootstrap.servers", "localhost:9092")  // Kafka server address
-      .option("subscribe", "testing")  // Kafka topic name
+      .option("kafka.bootstrap.servers", "localhost:9094")
+      .option("subscribe", "testing")
       .load()
 
     // Deserialize the Kafka message (value column) from bytes to string
@@ -50,18 +50,19 @@ object KafkaStreamToKafkaConsumer {
       .selectExpr("CAST(null AS STRING) AS key", "CAST(geo AS STRING) AS value")  // `key` is null, `value` is geo data as a string
 
 
+    geoStream.writeStream
+      .outputMode("append")
+      .format("console")
+      .start()
 
-
-
-    // Write the stream to Kafka topic
     val query = kafkaStreamToSend
       .writeStream
-      .outputMode("append")  // Append mode to keep adding new rows
-      .format("kafka")  // Write to Kafka
-      .option("kafka.bootstrap.servers", "localhost:9092")  // Kafka server address
-      .option("topic", "ready_data")  // Kafka topic to write to
-      .option("checkpointLocation", "./src/checkpoint")  // Checkpoint location for stream processing state
-      .trigger(Trigger.ProcessingTime("20 seconds"))  // Process every 20 seconds
+      .outputMode("append")
+      .format("kafka")
+      .option("kafka.bootstrap.servers", "localhost:9094")
+      .option("topic", "ready_data")
+      .option("checkpointLocation", "./src/checkpoint")
+      .trigger(Trigger.ProcessingTime("20 seconds"))
       .start()
 
     // Await termination of the stream
