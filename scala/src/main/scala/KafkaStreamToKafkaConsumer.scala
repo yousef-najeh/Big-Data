@@ -45,9 +45,6 @@ object KafkaStreamToKafkaConsumer {
       .withColumn("hashtags",
         when(col("hashtags").isNotNull, concat_ws(", ", col("hashtags.text")))
           .otherwise(lit("")))
-      .withColumn("geo",
-        when(col("coordinates").isNotNull, col("coordinates"))
-          .otherwise(array(lit("unknown"))))
       .withColumn("coordinates",
         when(col("coordinates").isNotNull, col("coordinates"))
           .otherwise(array(lit("unknown"))))
