@@ -42,9 +42,7 @@ object KafkaStreamToKafkaConsumer {
 
     // Handle hashtags and geo columns
     val geoStream = parsedStream
-      .withColumn("hashtags",
-        when(col("hashtags").isNotNull, concat_ws(", ", col("hashtags.text")))
-          .otherwise(lit("")))
+      .withColumn("hashtags", col("hashtags.text"))
       .withColumn("coordinates",
         when(col("coordinates").isNotNull, col("coordinates"))
           .otherwise(array(lit("unknown"))))
@@ -66,7 +64,15 @@ object KafkaStreamToKafkaConsumer {
 
     // Prepare data for Kafka
     val kafkaStreamToSend = sentimentStream
-      .selectExpr("CAST(null AS STRING) AS key", "CAST(sentiment AS STRING) AS value")
+      .select(
+        to_json(struct(
+          col("text"),
+          col("hashtags"),
+          col("coordinates"),
+          col("created_at"),
+          col("sentiment")
+        )).alias("value")
+      )
 
     // Write the processed data to the console for debugging
     sentimentStream.writeStream
