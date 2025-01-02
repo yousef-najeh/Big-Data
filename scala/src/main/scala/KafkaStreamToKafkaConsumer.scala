@@ -21,7 +21,7 @@ object KafkaStreamToKafkaConsumer {
     // Kafka input stream
     val kafkaStream = spark.readStream
       .format("kafka")
-      .option("kafka.bootstrap.servers", "localhost:9092")
+      .option("kafka.bootstrap.servers", "localhost:9094")
       .option("subscribe", "testing")
       .option("failOnDataLoss", "false")
       .option("startingOffsets", "earliest")
@@ -45,10 +45,8 @@ object KafkaStreamToKafkaConsumer {
       .withColumn("hashtags",
         when(col("hashtags").isNotNull, concat_ws(", ", col("hashtags.text")))
           .otherwise(lit("")))
+
       .withColumn("geo",
-        when(col("coordinates").isNotNull, col("coordinates"))
-          .otherwise(array(lit("unknown"))))
-      .withColumn("coordinates",
         when(col("coordinates").isNotNull, col("coordinates"))
           .otherwise(array(lit("unknown"))))
 
@@ -82,7 +80,7 @@ object KafkaStreamToKafkaConsumer {
       .writeStream
       .outputMode("append")
       .format("kafka")
-      .option("kafka.bootstrap.servers", "localhost:9092")
+      .option("kafka.bootstrap.servers", "localhost:9094")
       .option("topic", "ready_data")
       .option("checkpointLocation", "./src/checkpoint")
       .trigger(Trigger.ProcessingTime("20 seconds"))
@@ -91,4 +89,5 @@ object KafkaStreamToKafkaConsumer {
     query.awaitTermination()
   }
 }
+
 
