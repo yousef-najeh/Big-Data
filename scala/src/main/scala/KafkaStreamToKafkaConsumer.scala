@@ -41,8 +41,10 @@ object KafkaStreamToKafkaConsumer {
       .select("parsed.text", "parsed.created_at", "parsed.entities.hashtags", "parsed.geo.coordinates")
 
     // Handle hashtags and geo columns
-    val geoStream = parsedStream
-      .withColumn("hashtags", col("hashtags.text"))
+   val geoStream = parsedStream
+      .withColumn("hashtags",
+        when(col("hashtags").isNotNull, concat_ws(", ", col("hashtags.text")))
+          .otherwise(lit("")))
       .withColumn("coordinates",
         when(col("coordinates").isNotNull, col("coordinates"))
           .otherwise(array(lit("unknown"))))
