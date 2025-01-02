@@ -45,7 +45,8 @@ object KafkaStreamToKafkaConsumer {
       .withColumn("hashtags",
         when(col("hashtags").isNotNull, concat_ws(", ", col("hashtags.text")))
           .otherwise(lit("")))
-      .withColumn("coordinates",
+
+      .withColumn("geo",
         when(col("coordinates").isNotNull, col("coordinates"))
           .otherwise(array(lit("unknown"))))
 
@@ -88,3 +89,5 @@ object KafkaStreamToKafkaConsumer {
     query.awaitTermination()
   }
 }
+
+
