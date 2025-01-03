@@ -8,6 +8,9 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Map from './components/Map'; // Ensure the component name matches the import
 
 // Register components with Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -44,7 +47,10 @@ const data = [
     "location": "Boston, MA"
   }
 ];
-
+const tweets = [
+  { lat: 37.7749, lon: -122.4194, text: 'Tweet from San Francisco', sentiment: 'Positive' },
+  { lat: 40.7128, lon: -74.0060, text: 'Tweet from New York', sentiment: 'Neutral' },
+];
 function App() {
   const tweetCounts = groupTweetsByDate(data); // Group tweets by date
   const chartData = prepareChartData(tweetCounts); // Prepare chart data
@@ -75,8 +81,10 @@ function App() {
   return (
     <div>
       <h1>Tweets Over Time</h1>
+      <Map tweets={tweets} />;
       <Bar data={chartData} options={options} />
     </div>
+    
   );
 }
 
