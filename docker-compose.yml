@@ -21,3 +21,14 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
     ports:
     - '9094:9094'
+
+  elasticsearch:
+    image: elasticsearch:8.17.0
+    container_name: elastic-container
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
