@@ -57,7 +57,7 @@ exports.buildExactMatchQuery = (field, query) => {
     };
 }
 
-exports.buildAggregation = (type, interval) => {
+exports.buildAggregation = (type, interval="day") => {
     switch (type) {
         case aggregationType.TWEET_COUNTS:
             return {
