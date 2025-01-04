@@ -3,7 +3,6 @@ import Map from '../components/Map';
 import { useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import * as chartHelper from "../helpers/chartHelper";
-// import useGeoData from '../helpers/mapApiHook';
 import NavBar from '../components/NavBar';
 import Trend from '../components/Trend';
 
@@ -13,22 +12,6 @@ const Search = () => {
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
     const [query, setQuery] = useState(false);
-    // const [country,setCountry]=useState("")
-    // const {location,loading,error}=useGeoData(country)
-
-    // let coordinates;
-
-    // if (!loading && !error && location) {
-    //     coordinates = {
-    //         lat: location.lat,
-    //         lon: location.lon,
-    //     };
-    // } else {
-    //     coordinates = null; 
-    // }
-    // const coordinates_data=JSON.stringify(coordinates)
-    // console.log(coordinates?.lat,coordinates?.lon)
-
     const { data, isLoading, isError } = useQuery({
         queryKey: ["tweets", { query }],
         queryFn: async () => {
@@ -57,7 +40,7 @@ const Search = () => {
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
-        if (search.trim() !== "" || start !== "" || end !== "") {
+        if (search.trim() !== "" || start !== "" || end !== "" ) {
             setQuery(true);
         }
     };
@@ -84,10 +67,6 @@ const Search = () => {
                     value={end}
                     placeholder="end date"
                     onChange={(e) => setEnd(e.target.value)} />
-                {/* <input type="text"
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
-                        placeholder="city name"/> */}
                 <button type="submit">Search</button>
             </form>
 
@@ -100,11 +79,11 @@ const Search = () => {
                     <br />
                     <br />
                     <Map tweets={data.map.hits.hits} />
-                    <div >
-                        <Trend trendTag={trendTag} />
-                    </div>
                 </div>
             )}
+                <div >
+                        <Trend trendTag={trendTag} />
+                </div>
         </div>
     );
 };
