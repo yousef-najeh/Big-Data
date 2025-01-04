@@ -9,7 +9,6 @@ const Map = ({ tweets }) => {
     const handleMarkerClick = async (tweet) => {
         setSelectedTweet(tweet);
         try {
-            // Replace the URL below with the actual endpoint
             const response = await fetch(`http://127.0.0.1:3000/api/tweets/${tweet._id}`);
             const data = await response.json();
             setModalData(data._source);
