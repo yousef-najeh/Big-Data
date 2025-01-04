@@ -7,7 +7,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const testRoute = require("./routes/testRoute");
-app.use("/api/test", testRoute);
+const elasticRoute = require("./routes/elasticRoute");
+
+app.use("/api", elasticRoute);
 
 module.exports = app;
