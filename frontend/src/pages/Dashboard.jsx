@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import * as chartHelper from '../helpers/chartHelper';
 import Chart from '../components/Chart';
 import Map from '../components/Map';
+import NavBar from '../components/NavBar';
 
 const Dashboard = () => {
-  // Fetching chart data
   const { data: chartDataResponse, isLoading: isChartLoading } = useQuery({
     queryKey: ["chart"],
     queryFn: async () => {
@@ -14,7 +14,6 @@ const Dashboard = () => {
     refetchInterval: 30000,
   });
 
-  // Fetching map data
   const { data: mapDataResponse, isLoading: isMapLoading } = useQuery({
     queryKey: ["map"],
     queryFn: async () => {
@@ -24,18 +23,17 @@ const Dashboard = () => {
     refetchInterval: 30000,
   });
 
-  // Show loading indicator if any data is still being loaded
+
+
   if (isChartLoading || isMapLoading) {
     return <div>Loading...</div>;
   }
 
-  // Prepare chart data using the helper function
   const chartData = chartHelper.prepareChartData(chartDataResponse);
 
   return (
     <div>
-      <h1>Dashboard</h1>
-      {/* Displaying chart and map side by side */}
+      <NavBar />
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px', marginTop: '8%' }}>
         <div style={{ flex: 1 }}>
           <Chart chartData={chartData} />
@@ -44,6 +42,7 @@ const Dashboard = () => {
           <Map tweets={mapDataResponse.hits.hits} />
         </div>
       </div>
+
     </div>
   );
 };

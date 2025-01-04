@@ -94,7 +94,7 @@ def process_and_insert_data():
         }
         actions.append(action)
 
-        if len(actions) >= 1000:
+        if len(actions) >= 100:
             insert_bulk_data(es, actions, index_name)
             actions.clear()
 
