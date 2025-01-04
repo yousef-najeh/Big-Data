@@ -1,9 +1,9 @@
 import Chart from '../components/Chart';
-import Map from '../components/Map';
+// import Map from '../components/Map';
 import {  useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import * as chartHelper from "../helpers/chartHelper";
-import useGeoData from '../helpers/mapApiHook';
+// import useGeoData from '../helpers/mapApiHook';
 
 
 const Search = () => {
@@ -11,26 +11,26 @@ const Search = () => {
     const [start,setStart]=useState("");
     const [end,setEnd]=useState("");
     const [query, setQuery] = useState(false);
-    const [country,setCountry]=useState("")
-    const {location,loading,error}=useGeoData(country)
+    // const [country,setCountry]=useState("")
+    // const {location,loading,error}=useGeoData(country)
 
-    let coordinates;
+    // let coordinates;
 
-    if (!loading && !error && location) {
-        coordinates = {
-            lat: location.lat,
-            lon: location.lon,
-        };
-    } else {
-        coordinates = null; 
-    }
-    const coordinates_data=JSON.stringify(coordinates)
-    console.log(coordinates?.lat,coordinates?.lon)
+    // if (!loading && !error && location) {
+    //     coordinates = {
+    //         lat: location.lat,
+    //         lon: location.lon,
+    //     };
+    // } else {
+    //     coordinates = null; 
+    // }
+    // const coordinates_data=JSON.stringify(coordinates)
+    // console.log(coordinates?.lat,coordinates?.lon)
 
     console.log("search",search)
     console.log("start",start)
     console.log("end",end)
-    console.log("country",country)
+    // console.log("country",country)
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ["tweets", { query }],
@@ -38,7 +38,7 @@ const Search = () => {
             console.log("query", query);
 
             const response = await fetch(
-                    `http://127.0.0.1:3000/api/tweets/search?keyword=${search.trim()}&startTime=${start}&endTime=${end}&location=${coordinates_data}`
+                    `http://127.0.0.1:3000/api/tweets/search?keyword=${search.trim()}&startTime=${start}&endTime=${end}`
             );
             if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -50,16 +50,14 @@ const Search = () => {
     });
 
     const chartData = data
-        ? chartHelper.prepareChartData(
-            chartHelper.groupTweetsByDate(data.hits.hits)
-        )
+        ? chartHelper.prepareChartData(data.chart)
         : [];
 
         console.log(data)
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
-        if (search.trim() !== "" || start !== "" || end !== ""|| country !== "") {
+        if (search.trim() !== "" || start !== "" || end !== "") {
             setQuery(true);
         }
 
@@ -88,10 +86,10 @@ const Search = () => {
                         value={end}
                         placeholder="end date"
                         onChange={(e)=>setEnd(e.target.value)}/>
-                <input type="text"
+                {/* <input type="text"
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
-                        placeholder="city name"/>
+                        placeholder="city name"/> */}
                 <button type="submit">Search</button>
             </form>
 
@@ -103,7 +101,7 @@ const Search = () => {
                     <Chart chartData={chartData} />
                     <br />
                     <br />
-                    <Map tweets={data.hits.hits} />
+                    {/* <Map tweets={data.hits.hits} /> */}
                 </div>
             )}
         </div>
