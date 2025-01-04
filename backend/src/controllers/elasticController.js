@@ -14,9 +14,18 @@ const { aggregationType } = require("../config/aggregationType");
 exports.searchTweets = async (req, res) => {
     try {
         const query = buildQuery(req.query);
-        const result = await searchTweets(query);
+        const aggregations = buildAggregation(
+            aggregationType.TWEET_COUNTS,
+            req.query.interval
+        );
+        const resultChart = await aggregateTweets(query, aggregations);
 
-        res.status(200).send(result);
+        const mapQuery = buildExactMatchQuery("coordinates", query);
+        const resultMap = await getTweetsWithCoordinates(mapQuery);
+        res.status(200).send({
+            chart: { counts: resultChart.aggregations.tweets_per_day.buckets },
+            map: resultMap,
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: error.message });
