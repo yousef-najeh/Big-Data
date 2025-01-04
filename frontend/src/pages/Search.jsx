@@ -1,9 +1,9 @@
 import Chart from '../components/Chart';
-// import Map from '../components/Map';
+import Map from '../components/Map';
 import {  useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import * as chartHelper from "../helpers/chartHelper";
-// import useGeoData from '../helpers/mapApiHook';
+import useGeoData from '../helpers/mapApiHook';
 
 
 const Search = () => {
@@ -11,26 +11,26 @@ const Search = () => {
     const [start,setStart]=useState("");
     const [end,setEnd]=useState("");
     const [query, setQuery] = useState(false);
-    // const [country,setCountry]=useState("")
-    // const {location,loading,error}=useGeoData(country)
+    const [country,setCountry]=useState("")
+    const {location,loading,error}=useGeoData(country)
 
-    // let coordinates;
+    let coordinates;
 
-    // if (!loading && !error && location) {
-    //     coordinates = {
-    //         lat: location.lat,
-    //         lon: location.lon,
-    //     };
-    // } else {
-    //     coordinates = null; 
-    // }
-    // const coordinates_data=JSON.stringify(coordinates)
-    // console.log(coordinates?.lat,coordinates?.lon)
+    if (!loading && !error && location) {
+        coordinates = {
+            lat: location.lat,
+            lon: location.lon,
+        };
+    } else {
+        coordinates = null; 
+    }
+    const coordinates_data=JSON.stringify(coordinates)
+    console.log(coordinates?.lat,coordinates?.lon)
 
     console.log("search",search)
     console.log("start",start)
     console.log("end",end)
-    // console.log("country",country)
+    console.log("country",country)
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ["tweets", { query }],
@@ -86,10 +86,10 @@ const Search = () => {
                         value={end}
                         placeholder="end date"
                         onChange={(e)=>setEnd(e.target.value)}/>
-                {/* <input type="text"
+                 <input type="text"
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
-                        placeholder="city name"/> */}
+                        placeholder="city name"/>
                 <button type="submit">Search</button>
             </form>
 
@@ -101,7 +101,7 @@ const Search = () => {
                     <Chart chartData={chartData} />
                     <br />
                     <br />
-                    {/* <Map tweets={data.hits.hits} /> */}
+                     <Map tweets={data.hits.hits} />
                 </div>
             )}
         </div>
