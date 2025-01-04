@@ -7,7 +7,7 @@ const Navbar = () => {
         padding: '15px',
         backgroundColor: '#e3f2fd',
         display: 'flex',
-        justifyContent: 'center', // Center items horizontally
+        justifyContent: 'center', 
         alignItems: 'center',
       }}
     >
@@ -17,7 +17,7 @@ const Navbar = () => {
           margin: '0 20px',
           color: 'blue',
           fontSize: '24px',
-          textDecoration: 'none', // Removes underline
+          textDecoration: 'none', 
         }}
       >
         Dashboard
@@ -28,7 +28,7 @@ const Navbar = () => {
           margin: '0 20px',
           color: 'blue',
           fontSize: '24px',
-          textDecoration: 'none', // Removes underline
+          textDecoration: 'none', 
         }}
       >
         Search Page
